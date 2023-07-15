@@ -1,9 +1,10 @@
+import names
 import pandas as pd
 from random import randint
 
 class Base:
-    def __init__(self, name) -> None:
-        self.name = name
+    def __init__(self, name=None) -> None:
+        self.name = name if name else names.get_full_name()
         self._initial()
 
     def _roll(self, dice=6, times=1):
@@ -198,7 +199,7 @@ class Base:
             self.education_modifier(4)
         self._age = age
 
-    def save(self):
+    def get_serialized(self):
         serialized = dict(
             name=self.name,
             force=self.force,
@@ -215,5 +216,9 @@ class Base:
             moving_rate=self.moving_rate,
             hp=self.hp
         )
+        return serialized
+
+    def save(self):
+        serialized = self.get_serialized()
         df = pd.DataFrame([serialized])
         df.to_json(f"data/{self.name}.json", orient="index")
