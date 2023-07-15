@@ -147,7 +147,6 @@ class Base:
     def education_modifier(self, times=1):
         for _ in range(times):
             passed, _ = self.attribute_test('education')
-            print(passed)
             if passed:
                 bonus = self._roll(10)
                 self.education += bonus
